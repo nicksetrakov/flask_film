@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block menu %}
+    {{ super() }}
+    <li><a href="#"> Contact </a> </li>
+{% endblock %}
+{% block content %}
+    <h1>Home page</h1>
+    <p>Hello, Jinja</p>
+    <hr>
+    <form action="" method="post">
+        <p>
+            <label for="message"> Message: </label>
+            <input type="text" name="message">
+        </p>
+        <p>
+            <input type="submit">
+        </p>
+        <p> {{ message }} </p>
+    </form>
+{% endblock %}

@@ -1,0 +1,105 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+    <title>Home - Home Page | Cinema - Free Website Template from Templates.com</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet" type="text/css"/>
+    <script src="{{ url_for('static', filename='js/jquery-1.4.2.min.js') }}" type="text/javascript"></script>
+    <script src="{{ url_for('static', filename='js/cufon-yui.js') }}" type="text/javascript"></script>
+    <script src="{{ url_for('static', filename='js/cufon-replace.js') }}" type="text/javascript"></script>
+    <script src="{{ url_for('static', filename='js/Gill_Sans_400.font.js') }}" type="text/javascript"></script>
+    <script src="{{ url_for('static', filename='js/script.js') }}" type="text/javascript"></script>
+    <!--[if lt IE 7]>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/ie_png.js') }}"></script>
+    <script type="text/javascript">
+		 ie_png.fix('.png, .link1 span, .link1');
+
+
+
+
+
+
+    </script>
+    <link href="{{ url_for('static', filename='ie6.css') }}" rel="stylesheet" type="text/css"/>
+    <![endif]-->
+</head>
+{% if request.path==url_for('index') or request.path=='/' %}
+<body id="page1">
+{% else %}
+<body id="page2">
+{% endif %}
+<div class="tail-top">
+    <div class="tail-bottom">
+        <div id="main">
+            <!-- HEADER -->
+            <div id="header">
+                <div class="row-1">
+                    <div class="fleft"><a href="/">Cinema <span>World</span></a></div>
+                    <ul>
+                        <li><a href="{{ url_for('index') }}"><img {% if request.path==url_for('index') or
+                                                                  request.path=='/' %}
+                                                                  src="{{ url_for('static', filename='img/icon1-act.gif') }}"
+                                                                  {% else %}
+                                                                  src="{{ url_for('static', filename='img/icon1.gif') }}"
+                                                                  {% endif %}
+                                                                  alt=""/></a>
+
+                        </li>
+                        <li><a href="{{ url_for('contact_us') }}"><img {% if request.path== url_for('contact_us') %}
+                            src="{{ url_for('static', filename='img/icon2-act.gif') }}"
+                            {% else %}
+                            src="{{ url_for('static', filename='img/icon2.gif') }}"
+                            {% endif %}
+                            alt=""/></a>
+                        </li>
+                        <li><a href="{{ url_for('sitemap') }}"><img {% if request.path== url_for('sitemap') %}
+                            src="{{ url_for('static', filename='img/icon3-act.gif') }}"
+                            {% else %}
+                            src="{{ url_for('static', filename='img/icon3.gif') }}"
+                            {% endif %}
+                            alt=""/></a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="row-2">
+                    <ul>
+                        {% for link, title in links %}
+                        <li><a
+                                href="{{ url_for(link) }}" {% if request.path== url_for(link) %}
+                                class="active"
+                                {% endif %}>
+                            {{ title }}
+                        </a></li>
+                        {% endfor %}
+                        <li class="last"><a
+                                href="{{ url_for('sitemap') }}" {% if request.path== url_for('sitemap') %}
+                            class="active"
+                            {% endif %}>
+                            Sitemap
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            {% block content %}
+
+            {% endblock %}
+            <!-- FOOTER -->
+            <div id="footer">
+                <div class="left">
+                    <div class="right">
+                        <div class="inside">Copyright - Type in your name here<br/>
+                            <a rel="nofollow" href="http://www.templatemonster.com/" class="new_window">Website
+                                template</a> designed by TemplateMonster.com<br/>
+                            <a href="http://www.templates.com/product/3d-models/" class="new_window">3D Models</a>
+                            provided by Templates.com
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript"> Cufon.now(); </script>
+</body>
+</html>
