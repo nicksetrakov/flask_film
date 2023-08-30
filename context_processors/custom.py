@@ -1,8 +1,8 @@
 def links():
     links = [
         ('index', 'Home'),
-        ('about_us', 'About'),
-        ('articles', 'Articles'),
+        ('add_film', 'Add Film'),
+        ('films', 'Films'),
         ('contact_us', 'Contacts'),
     ]
     return {'links': links}

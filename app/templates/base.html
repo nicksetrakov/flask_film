@@ -59,6 +59,9 @@
                             {% endif %}
                             alt=""/></a>
                         </li>
+                        <li>
+                            <a href="{{ url_for('registration') }}"> Registration </a>
+                        </li>
                     </ul>
                 </div>
                 <div class="row-2">
@@ -80,6 +83,13 @@
                         </li>
                     </ul>
                 </div>
+                <br/>
+
+                {% for message in get_flashed_messages() %}
+                    <div class="alert alert-success">
+                        {{ message }}
+                    </div>
+                    {% endfor %}
             </div>
             {% block content %}
 

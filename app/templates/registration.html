@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% block content %}
+<div id="content">
+    <div class="line-hor"></div>
+    <div class="content">
+        <h3>Registration <span>Form</span></h3>
+        <form id="contacts-form" action="" method="post">
+            {{ form.csrf_token() }}
+            <fieldset>
+                <div class="field"> {{ form.username.label() }}
+                    {{ form.username() }}
+                    {% if form.errors.username %}
+                    <ul class="errors">
+                        {% for error in form.errors.username %}
+                        <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                </div>
+                <br>
+                <div class="field"> {{ form.email.label() }}
+                    {{ form.email() }}
+                    {% if form.errors.email %}
+                    <ul class="errors">
+                        {% for error in form.errors.email %}
+                        <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                </div>
+                <br>
+
+                <div class="field"> {{ form.password.label() }}
+                    {{ form.password() }}
+                </div>
+                <div class="field"> {{ form.confirm.label() }}
+                    {{ form.confirm() }}
+                </div>
+                <div class="field"> {{ form.accept_tos.label() }}
+                    {{ form.accept_tos() }}
+                </div>
+                <div class="wrapper">
+                    {{ form.submit() }}
+
+                </div>
+
+            </fieldset>
+        </form>
+    </div>
+</div>
+{% endblock %}

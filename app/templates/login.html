@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block content %}
+<div id="content">
+    <div class="line-hor"></div>
+    <div class="content">
+        <h3>Login <span>Form</span></h3>
+
+        <form id="contacts-form" action="" method="post">
+            {{ form.csrf_token() }}
+            <fieldset>
+                <div class="field"> {{ form.username.label() }}
+                    {{ form.username() }}
+
+                </div>
+
+                <div class="field"> {{ form.password.label() }}
+                    {{ form.password() }}
+                </div>
+
+                <div class="wrapper">
+                    {{ form.submit() }}
+                    <a href="{{ url_for('registration') }}"> Перейти к Регистрации </a>
+
+                </div>
+
+            </fieldset>
+        </form>
+    </div>
+</div>
+{% endblock %}
