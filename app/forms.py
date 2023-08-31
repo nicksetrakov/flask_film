@@ -1,7 +1,9 @@
-from wtforms import BooleanField, StringField, PasswordField, validators, SubmitField, TextAreaField
+from wtforms import BooleanField, StringField, PasswordField, validators, SubmitField, TextAreaField, FloatField, \
+    IntegerField, SelectField, FileField
 from flask_wtf import FlaskForm
-from wtforms.validators import DataRequired, Email, Length, EqualTo, ValidationError
+from wtforms.validators import DataRequired, Email, Length, EqualTo, ValidationError, NumberRange
 from app.models import User
+from app.utils import allowed_file
 
 
 class RegistrationForm(FlaskForm):
@@ -31,8 +33,18 @@ class MessageForm(FlaskForm):
     submit = SubmitField('Submit')
 
 
-class AddFilmForm(FlaskForm):
-    pass
+class FilmForm(FlaskForm):
+    title = StringField('Название фильма:', validators=[DataRequired()])
+    genres = StringField('Жанр:', validators=[DataRequired()])
+    release_year = IntegerField('Дата выхода:', validators=[DataRequired(), NumberRange(min=1800, max=2100)])
+    director = StringField('Режиссер:', validators=[DataRequired()])
+    description = TextAreaField('Описание:')
+    rating = FloatField('Рейтинг:', validators=[DataRequired(), NumberRange(min=0, max=10)])
+    poster = FileField('Обложка:')
+
+    def validate_poster(self, field):
+        if field.data and not allowed_file(field.data.filename):
+            raise ValidationError('Неверный формат файла. Доустпные форматы: png, jpg, jpeg, gif')
 
 
 class LoginForm(FlaskForm):
@@ -40,3 +52,8 @@ class LoginForm(FlaskForm):
     password = PasswordField('Пароль',
                              validators=[DataRequired(), Length(min=4, max=25)])
     submit = SubmitField('Авторизация')
+
+
+class SearchForm(FlaskForm):
+    search_query = StringField('Search')
+    sort_by = SelectField('Sort By', choices=[('rating', 'Rating'), ('release_year', 'Release Year')])

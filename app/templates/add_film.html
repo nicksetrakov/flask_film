@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<!-- CONTENT -->
+<div id="content">
+    <div class="ic">More Website Templates at TemplateMonster.com!</div>
+    <div class="line-hor"></div>
+    <div class="box">
+        <div class="border-right">
+            <div class="border-left">
+                <div class="inner">
+                    <h2>Add New Film</h2>
+                    <form method="POST" enctype="multipart/form-data">
+                        {{ form.hidden_tag() }}
+                        <div class="mb-3">
+                            {{ form.title.label() }}
+                            {{ form.title(class="form-control") }}
+                            {% for error in form.title.errors %}
+                            <div class="alert alert-danger">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                        <div class="mb-3">
+                            {{ form.genres.label() }}
+                            {{ form.genres(class="form-control") }}
+                            {% for error in form.genres.errors %}
+                            <div class="alert alert-danger">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                        <div class="mb-3">
+                            {{ form.release_year.label() }}
+                            {{ form.release_year(class="form-control") }}
+                            {% for error in form.release_year.errors %}
+                            <div class="alert alert-danger">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                        <div class="mb-3">
+                            {{ form.director.label() }}
+                            {{ form.director(class="form-control") }}
+                            {% for error in form.director.errors %}
+                            <div class="alert alert-danger">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                        <div class="mb-3">
+                            {{ form.description.label() }}
+                            {{ form.description(class="form-control") }}
+                            {% for error in form.description.errors %}
+                            <div class="alert alert-danger">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                        <div class="mb-3">
+                            {{ form.rating.label() }}
+                            {{ form.rating(class="form-control") }}
+                            {% for error in form.rating.errors %}
+                            <div class="alert alert-danger">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                        <div class="mb-3">
+                            {{ form.poster.label() }}
+                            {{ form.poster(class="form-control", type="file") }}
+                            {% for error in form.poster.errors %}
+                            <div class="alert alert-danger">{{ error }}</div>
+                            {% endfor %}
+                            {% if poster_error %}
+                            <div class="alert alert-danger">{{ poster_error }}</div>
+                            {% endif %}
+                        </div>
+
+
+                        <button type="submit" class="btn btn-primary">Add Film</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

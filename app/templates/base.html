@@ -3,113 +3,66 @@
 <head>
     <title>Home - Home Page | Cinema - Free Website Template from Templates.com</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet" type="text/css"/>
-    <script src="{{ url_for('static', filename='js/jquery-1.4.2.min.js') }}" type="text/javascript"></script>
-    <script src="{{ url_for('static', filename='js/cufon-yui.js') }}" type="text/javascript"></script>
-    <script src="{{ url_for('static', filename='js/cufon-replace.js') }}" type="text/javascript"></script>
-    <script src="{{ url_for('static', filename='js/Gill_Sans_400.font.js') }}" type="text/javascript"></script>
-    <script src="{{ url_for('static', filename='js/script.js') }}" type="text/javascript"></script>
-    <!--[if lt IE 7]>
-    <script type="text/javascript" src="{{ url_for('static', filename='js/ie_png.js') }}"></script>
-    <script type="text/javascript">
-		 ie_png.fix('.png, .link1 span, .link1');
+    <link href="{{ url_for('static', filename='css/bootstrap.css') }}" rel="stylesheet" type="text/css"/>
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet" type="text/css"/>
+    <style>
+        body { --bs-body-color: #bbc5cf; }
+       .form-control { --bs-body-bg: #000; }
 
-
-
-
-
-
-    </script>
-    <link href="{{ url_for('static', filename='ie6.css') }}" rel="stylesheet" type="text/css"/>
-    <![endif]-->
+    </style>
 </head>
-{% if request.path==url_for('index') or request.path=='/' %}
-<body id="page1">
-{% else %}
-<body id="page2">
-{% endif %}
-<div class="tail-top">
-    <div class="tail-bottom">
-        <div id="main">
-            <!-- HEADER -->
-            <div id="header">
-                <div class="row-1">
-                    <div class="fleft"><a href="/">Cinema <span>World</span></a></div>
-                    <ul>
-                        <li><a href="{{ url_for('index') }}"><img {% if request.path==url_for('index') or
-                                                                  request.path=='/' %}
-                                                                  src="{{ url_for('static', filename='img/icon1-act.gif') }}"
-                                                                  {% else %}
-                                                                  src="{{ url_for('static', filename='img/icon1.gif') }}"
-                                                                  {% endif %}
-                                                                  alt=""/></a>
+<body class="html">
+<header class="p-3 text-bg-dark">
+    <div class="container">
+        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+            <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+                <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap">
+                    <use xlink:href="#bootstrap"></use>
+                </svg>
+            </a>
 
-                        </li>
-                        <li><a href="{{ url_for('contact_us') }}"><img {% if request.path== url_for('contact_us') %}
-                            src="{{ url_for('static', filename='img/icon2-act.gif') }}"
-                            {% else %}
-                            src="{{ url_for('static', filename='img/icon2.gif') }}"
-                            {% endif %}
-                            alt=""/></a>
-                        </li>
-                        <li><a href="{{ url_for('sitemap') }}"><img {% if request.path== url_for('sitemap') %}
-                            src="{{ url_for('static', filename='img/icon3-act.gif') }}"
-                            {% else %}
-                            src="{{ url_for('static', filename='img/icon3.gif') }}"
-                            {% endif %}
-                            alt=""/></a>
-                        </li>
-                        <li>
-                            <a href="{{ url_for('registration') }}"> Registration </a>
-                        </li>
-                    </ul>
-                </div>
-                <div class="row-2">
-                    <ul>
-                        {% for link, title in links %}
-                        <li><a
-                                href="{{ url_for(link) }}" {% if request.path== url_for(link) %}
-                                class="active"
-                                {% endif %}>
-                            {{ title }}
-                        </a></li>
-                        {% endfor %}
-                        <li class="last"><a
-                                href="{{ url_for('sitemap') }}" {% if request.path== url_for('sitemap') %}
-                            class="active"
-                            {% endif %}>
-                            Sitemap
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-                <br/>
+            <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+                <li><a href="{{ url_for('index') }}" class="nav-link px-2 text-secondary"> Home </a></li>
+                <li><a href="{{ url_for('add_film') }}" class="nav-link px-2 text-white"> Add film </a></li>
+                <li><a href="{{ url_for('films') }}" class="nav-link px-2 text-white">Films</a></li>
+            </ul>
 
-                {% for message in get_flashed_messages() %}
-                    <div class="alert alert-success">
-                        {{ message }}
-                    </div>
-                    {% endfor %}
-            </div>
-            {% block content %}
+            <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
+                <input type="search" class="form-control form-control-dark text-bg-dark" placeholder="Search..."
+                       aria-label="Search">
+            </form>
 
-            {% endblock %}
-            <!-- FOOTER -->
-            <div id="footer">
-                <div class="left">
-                    <div class="right">
-                        <div class="inside">Copyright - Type in your name here<br/>
-                            <a rel="nofollow" href="http://www.templatemonster.com/" class="new_window">Website
-                                template</a> designed by TemplateMonster.com<br/>
-                            <a href="http://www.templates.com/product/3d-models/" class="new_window">3D Models</a>
-                            provided by Templates.com
-                        </div>
-                    </div>
-                </div>
+            <div class="text-end">
+                <a href="{{ url_for('login') }}" class="btn btn-outline-light me-2">Login</a>
+                <a href="{{ url_for('registration') }}" class="btn btn-warning">Sign-up</a>
             </div>
         </div>
     </div>
+</header>
+
+{% for message in get_flashed_messages() %}
+<div class="alert alert-success">
+    {{ message }}
 </div>
-<script type="text/javascript"> Cufon.now(); </script>
+{% endfor %}
+{% block content %}
+
+{% endblock %}
+<!-- FOOTER -->
+<div class="container">
+    <footer class="py-3 my-4">
+        <ul class="nav justify-content-center border-bottom pb-3 mb-3">
+            <li class="nav-item"><a href="#" class="nav-link px-2 text-body-secondary">Home</a></li>
+            <li class="nav-item"><a href="#" class="nav-link px-2 text-body-secondary">Features</a></li>
+            <li class="nav-item"><a href="#" class="nav-link px-2 text-body-secondary">Pricing</a></li>
+            <li class="nav-item"><a href="#" class="nav-link px-2 text-body-secondary">FAQs</a></li>
+            <li class="nav-item"><a href="#" class="nav-link px-2 text-body-secondary">About</a></li>
+        </ul>
+        <p class="text-center text-body-secondary">© 2023 Company, Inc</p>
+    </footer>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+
+<script src="{{ url_for('static', filename='js/bootstrap.js') }}"></script>
 </body>
 </html>

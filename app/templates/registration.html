@@ -4,10 +4,9 @@
     <div class="line-hor"></div>
     <div class="content">
         <h3>Registration <span>Form</span></h3>
-        <form id="contacts-form" action="" method="post">
+        <form  method="post">
             {{ form.csrf_token() }}
-            <fieldset>
-                <div class="field"> {{ form.username.label() }}
+                <div class="mb-3"> {{ form.username.label() }}
                     {{ form.username() }}
                     {% if form.errors.username %}
                     <ul class="errors">
@@ -18,7 +17,7 @@
                     {% endif %}
                 </div>
                 <br>
-                <div class="field"> {{ form.email.label() }}
+                <div class="mb-3"> {{ form.email.label() }}
                     {{ form.email() }}
                     {% if form.errors.email %}
                     <ul class="errors">
@@ -30,21 +29,15 @@
                 </div>
                 <br>
 
-                <div class="field"> {{ form.password.label() }}
+                <div class="mb-3"> {{ form.password.label() }}
                     {{ form.password() }}
                 </div>
-                <div class="field"> {{ form.confirm.label() }}
+                <div class="mb-3"> {{ form.confirm.label() }}
                     {{ form.confirm() }}
                 </div>
-                <div class="field"> {{ form.accept_tos.label() }}
-                    {{ form.accept_tos() }}
+                <div class="mb-3"> {{ form.accept_tos.label() }} {{ form.accept_tos() }}
                 </div>
-                <div class="wrapper">
-                    {{ form.submit() }}
-
-                </div>
-
-            </fieldset>
+                <button type="submit" class="btn btn-primary">Registration</button>
         </form>
     </div>
 </div>

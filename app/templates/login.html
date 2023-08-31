@@ -5,17 +5,18 @@
     <div class="content">
         <h3>Login <span>Form</span></h3>
 
-        <form id="contacts-form" action="" method="post">
+        <form method="post">
             {{ form.csrf_token() }}
             <fieldset>
-                <div class="field"> {{ form.username.label() }}
+                <div class="mb-3"> {{ form.username.label() }}
                     {{ form.username() }}
 
                 </div>
 
-                <div class="field"> {{ form.password.label() }}
+                <div class="mb-3"> {{ form.password.label() }}
                     {{ form.password() }}
                 </div>
+
 
                 <div class="wrapper">
                     {{ form.submit() }}
