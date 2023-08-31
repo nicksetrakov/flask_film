@@ -1,0 +1,3 @@
+![screencapture-127-0-0-1-5000-2023-08-31-09_53_38.png](screenshots%2Fscreencapture-127-0-0-1-5000-2023-08-31-09_53_38.png)
+![screencapture-127-0-0-1-5000-login-2023-08-31-09_54_57.png](screenshots%2Fscreencapture-127-0-0-1-5000-login-2023-08-31-09_54_57.png)
+![screencapture-127-0-0-1-5000-registration-2023-08-31-09_54_21.png](screenshots%2Fscreencapture-127-0-0-1-5000-registration-2023-08-31-09_54_21.png)
