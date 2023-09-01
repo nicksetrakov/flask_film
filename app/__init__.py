@@ -13,8 +13,8 @@ app.context_processor(custom.links)
 db.init_app(app)
 manager = LoginManager(app)
 
-from app import models, routes
 
+from app import models, routes, admin
 
 with app.app_context():
     db.create_all()

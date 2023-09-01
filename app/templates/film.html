@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-6">
+            <!-- Фото фильма -->
+            <img src="{{ url_for('static', filename='poster/' + film.poster ) }}" alt="Постер фильма" class="img-fluid">
+        </div>
+        <div class="col-md-6">
+            <!-- Название фильма -->
+            <h1>{{ film.name }}</h1>
+            <!-- Год выхода фильма -->
+            <p><strong>Год выхода:</strong> {{ film.release_year }} </p>
+            <p><strong>Рейтинг:</strong> {{ film.rating }} </p>
+            <!-- Описание фильма -->
+            <p><strong>Описание:</strong> {{ film.description }} </p>
+        </div>
+    </div>
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <!-- Комментарии -->
+            <h2>Комментарии</h2>
+            <ul class="list-group">
+                <li class="list-group-item">
+                    <strong>Пользователь 1:</strong> Очень хороший фильм!
+                </li>
+                <li class="list-group-item">
+                    <strong>Пользователь 2:</strong> Я тоже его смотрел, отличный выбор!
+                </li>
+            </ul>
+            <!-- Форма для добавления комментария -->
+            <h3>Добавить комментарий</h3>
+            <form method="POST" action="/add_comment">
+                <div class="mb-3">
+                    <label for="username" class="form-label">Ваше имя</label>
+                    <input type="text" class="form-control" id="username" name="username" required>
+                </div>
+                <div class="mb-3">
+                    <label for="comment" class="form-label">Ваш комментарий</label>
+                    <textarea class="form-control" id="comment" name="comment" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Отправить комментарий</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -2,6 +2,7 @@ from flask import render_template, request, redirect, flash, url_for
 from werkzeug.security import check_password_hash, generate_password_hash
 from werkzeug.utils import secure_filename
 from flask_login import login_user, login_required, logout_user, current_user
+from transliterate import translit
 
 import os
 from datetime import datetime
@@ -9,7 +10,7 @@ from datetime import datetime
 from app.database import db
 from app import app
 from app.forms import RegistrationForm, LoginForm, FilmForm
-from app.models import User, Film
+from app.models import User, Film, Genre
 from app.utils import allowed_file
 
 
@@ -48,7 +49,7 @@ def add_film():
     if request.method == 'POST' and form.validate_on_submit():
         new_film = Film(
             name=form.title.data,
-            genre=form.genres.data,
+            translit_name=translit(form.title.data, 'ru', reversed=True),
             release_year=form.release_year.data,
             director=form.director.data,
             description=form.description.data,
@@ -65,6 +66,8 @@ def add_film():
             poster_path = os.path.join(app.config['UPLOAD_FOLDER'], unique_filename)
             poster.save(poster_path)
             new_film.poster = unique_filename
+            selected_genres = Genre.query.filter(Genre.id.in_(form.genres.data)).all()
+            new_film.genres.extend(selected_genres)
         try:
             db.session.add(new_film)
             db.session.commit()
@@ -92,14 +95,10 @@ def edit_film(film_id):
     return render_template('edit_film.html', form=form, film=film)
 
 
-@app.route('/films')
-def films():
-    return render_template('articles.html')
-
-
-@app.route('/film/<int:film_id>')
-def film_page(film_id):
-    return render_template('film.html')
+@app.route('/film/<string:film_name>')
+def film_page(film_name):
+    film = Film.query.filter_by(translit_name=film_name).first()
+    return render_template('film.html', film=film)
 
 
 @app.route('/contact_us')

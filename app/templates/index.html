@@ -12,28 +12,24 @@
             <div class="col-md-6">
                 <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
                     <div class="col p-4 d-flex flex-column position-static">
-          <strong class="d-inline-block mb-2 text-primary-emphasis">World</strong>
-          <h3 class="mb-0">Featured post</h3>
-          <div class="mb-1 text-body-secondary">Nov 12</div>
-          <p class="card-text mb-auto">This is a wider card with supporting text below as a natural lead-in to additional content.</p>
-          <a href="#" class="icon-link gap-1 icon-link-hover stretched-link">
-            Continue reading
-            <svg class="bi"><use xlink:href="#chevron-right"></use></svg>
-          </a>
-        </div>
+                        <h3 class="mb-0"> {{ film.name }} </h3>
+                        <div class="mb-1 text-body-secondary">{{ film.release_year }}</div>
+                        <div class="mb-1 text-body-secondary">{{ film.genre }}</div>
+                        <p class="card-text mb-auto">{{ film.description[:100] }}...</p>
+                        <a href="{{ url_for('film_page', film_name=film.name|translit) }}" class="icon-link gap-1 icon-link-hover stretched-link">
+                            Continue reading
+                            <svg class="bi">
+                                <use xlink:href="#chevron-right"></use>
+                            </svg>
+                        </a>
+                    </div>
                     <div class="col-auto d-none d-lg-block">
                         <img class="bd-placeholder-img" width="200" height="250"
                              src="{{ url_for('static', filename='poster/' + film.poster) }}" alt="Your Image">
 
                     </div>
                 </div>
-                <div class="flex-grow-1 ms-3">
-                    <h4>Toy Story 3</h4>
-                    <p>Check out Disney-Pixar's official Toy Story site, watch the <span
-                            class="text-primary">Toy Story 3</span> trailer, and
-                        meet new characters. Remember, no toy gets left behind!</p>
-                    <div class="wrapper"><a href="#" class="btn btn-primary">Read More</a></div>
-                </div>
+            </div>
         </li>
         {% endfor %}
     </ul>

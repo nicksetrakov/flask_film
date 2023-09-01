@@ -18,7 +18,8 @@ class User(db.Model, UserMixin):
 class Film(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(200), nullable=False)
-    genre = db.Column(db.String(200), nullable=False)
+    translit_name = db.Column(db.String(200), nullable=False)
+    genres = db.relationship('Genre', secondary='film_genre', backref=db.backref('films', lazy='dynamic'))
     release_year = db.Column(db.Integer, nullable=False)
     date = db.Column(db.DateTime, default=datetime.utcnow)
     director = db.Column(db.String(100), default='unknown')
@@ -33,10 +34,16 @@ class Film(db.Model):
 
 class Genre(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(50), nullable=False)
+    name = db.Column(db.String(128), nullable=False, unique=True)
 
     def __repr__(self):
-        return '<Genre %r>' % self.id
+        return self.name
+
+
+film_genre = db.Table('film_genre',
+                      db.Column('film_id', db.Integer, db.ForeignKey('film.id')),
+                      db.Column('genre_id', db.Integer, db.ForeignKey('genre.id'))
+                      )
 
 
 @manager.user_loader

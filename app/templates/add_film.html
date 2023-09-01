@@ -19,9 +19,9 @@
                             <div class="alert alert-danger">{{ error }}</div>
                             {% endfor %}
                         </div>
-                        <div class="mb-3">
-                            {{ form.genres.label() }}
-                            {{ form.genres(class="form-control") }}
+                        <div class="form-group">
+                            {{ form.genres.label }}
+                            {{ form.genres(class="form-control", multiple="multiple") }}
                             {% for error in form.genres.errors %}
                             <div class="alert alert-danger">{{ error }}</div>
                             {% endfor %}
