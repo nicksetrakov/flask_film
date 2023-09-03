@@ -13,6 +13,9 @@
             <!-- Год выхода фильма -->
             <p><strong>Год выхода:</strong> {{ film.release_year }} </p>
             <p><strong>Рейтинг:</strong> {{ film.rating }} </p>
+            <p><strong>Жанр:</strong> {% for genre in film.genres %}
+            {{ genre }}, 
+            {% endfor %}</p>
             <!-- Описание фильма -->
             <p><strong>Описание:</strong> {{ film.description }} </p>
         </div>

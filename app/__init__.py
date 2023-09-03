@@ -16,6 +16,8 @@ manager = LoginManager(app)
 
 from app import models, routes, admin
 
+
 with app.app_context():
     db.create_all()
+
 

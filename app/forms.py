@@ -1,5 +1,5 @@
 from wtforms import BooleanField, StringField, PasswordField, validators, SubmitField, TextAreaField, FloatField, \
-    IntegerField, SelectField, FileField, SelectMultipleField
+    IntegerField, SelectField, FileField, SelectMultipleField, widgets
 from flask_wtf import FlaskForm
 from wtforms.validators import DataRequired, Email, Length, EqualTo, ValidationError, NumberRange
 from app.models import User
@@ -35,7 +35,8 @@ class MessageForm(FlaskForm):
 
 class FilmForm(FlaskForm):
     title = StringField('Название фильма:', validators=[DataRequired()])
-    genres = SelectMultipleField('Жанр:', coerce=int)
+    genres = SelectMultipleField('Жанр:', choices=[], coerce=int, option_widget=widgets.CheckboxInput(),
+                                 widget=widgets.ListWidget(prefix_label=False), render_kw={'size': 5})
     release_year = IntegerField('Дата выхода:', validators=[DataRequired(), NumberRange(min=1800, max=2100)])
     director = StringField('Режиссер:', validators=[DataRequired()])
     description = TextAreaField('Описание:')
@@ -44,7 +45,7 @@ class FilmForm(FlaskForm):
 
     def validate_poster(self, field):
         if field.data and not allowed_file(field.data.filename):
-            raise ValidationError('Неверный формат файла. Доустпные форматы: png, jpg, jpeg, gif')
+            raise ValidationError('Неверный формат файла. Доступные форматы: png, jpg, jpeg, gif')
 
 
 class LoginForm(FlaskForm):

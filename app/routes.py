@@ -46,6 +46,8 @@ def registration():
 @login_required
 def add_film():
     form = FilmForm()
+    available_genres = Genre.query.all()  # Получить все доступные жанры из базы данных
+    form.genres.choices = [(genre.id, genre.name) for genre in available_genres]
     if request.method == 'POST' and form.validate_on_submit():
         new_film = Film(
             name=form.title.data,
@@ -67,14 +69,16 @@ def add_film():
             poster.save(poster_path)
             new_film.poster = unique_filename
             selected_genres = Genre.query.filter(Genre.id.in_(form.genres.data)).all()
+            print(selected_genres)
+            print(form.genres.data)
             new_film.genres.extend(selected_genres)
         try:
             db.session.add(new_film)
             db.session.commit()
-            return redirect(url_for('index'))
-        except:
-            flash('Произошла ошибка')
-    return render_template('add_film.html', form=form)
+            return redirect(url_for('film_page', film_name=new_film.translit_name))
+        except Exception as e:
+            flash(f'Произошла ошибка: {str(e)}')
+    return render_template('add_film.html', form=form, available_genres=available_genres)
 
 
 @app.route('/edit_film/<int:film_id>', methods=['GET', 'POST'])
@@ -89,7 +93,7 @@ def edit_film(film_id):
         form.populate_obj(film)
         try:
             db.session.commit()
-            return redirect(url_for('film_page', film_id=film_id))
+            return redirect(url_for('film_page', film_name=film.translit_name))
         except:
             flash('Произошла ошибка')
     return render_template('edit_film.html', form=form, film=film)
@@ -128,9 +132,7 @@ def login():
                 return redirect(url_for('index'))
             return redirect(next_page)
         else:
-            flash('Логин либо пароль не правильны')
-    else:
-        flash('Заполните поля')
+            flash('Неправильное имя пользователя или пароль', 'danger')
     return render_template('login.html', form=form)
 
 

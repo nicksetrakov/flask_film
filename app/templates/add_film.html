@@ -12,7 +12,7 @@
                     <h2>Add New Film</h2>
                     <form method="POST" enctype="multipart/form-data">
                         {{ form.hidden_tag() }}
-                        <div class="mb-3">
+                        <div class="form-group">
                             {{ form.title.label() }}
                             {{ form.title(class="form-control") }}
                             {% for error in form.title.errors %}
@@ -20,12 +20,21 @@
                             {% endfor %}
                         </div>
                         <div class="form-group">
-                            {{ form.genres.label }}
-                            {{ form.genres(class="form-control", multiple="multiple") }}
-                            {% for error in form.genres.errors %}
-                            <div class="alert alert-danger">{{ error }}</div>
-                            {% endfor %}
+                            <label>Выберите жанры:</label>
+                            <div>
+                                {% for genre_id, genre_name in form.genres.choices %}
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" name="genres" value="{{ genre_id }}">
+                                    {{ genre_name }}
+                                </label>
+                                {% endfor %}
+                            </div>
                         </div>
+                        <div id="selected-genres" class="mb-3">
+                            Выбранные жанры:
+                            <ul id="selected-genres-list"></ul>
+                        </div>
+                        <button type="button" id="add_genre" class="btn btn-primary">Добавить жанр</button>
                         <div class="mb-3">
                             {{ form.release_year.label() }}
                             {{ form.release_year(class="form-control") }}
@@ -66,11 +75,39 @@
                         </div>
 
 
-                        <button type="submit" class="btn btn-primary">Add Film</button>
+                        <button type="submit" class="btn btn-primary">Сохранить</button>
                     </form>
                 </div>
             </div>
         </div>
     </div>
 </div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+        const selectedGenresList = document.getElementById('selected-genres-list');
+
+        checkboxes.forEach(function (checkbox) {
+            checkbox.addEventListener('change', function () {
+                const selectedGenreId = checkbox.value;
+                const selectedGenreName = checkbox.parentElement.textContent.trim();
+
+                if (checkbox.checked) {
+                    const listItem = document.createElement('li');
+                    listItem.textContent = selectedGenreName;
+                    selectedGenresList.appendChild(listItem);
+                } else {
+                    // Если флажок снят, удалите соответствующий жанр из списка выбранных
+                    const genreItems = selectedGenresList.querySelectorAll('li');
+                    genreItems.forEach(function (item) {
+                        if (item.textContent === selectedGenreName) {
+                            item.remove();
+                        }
+                    });
+                }
+            });
+        });
+    });
+</script>
 {% endblock %}
