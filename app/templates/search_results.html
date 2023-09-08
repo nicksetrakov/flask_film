@@ -1,13 +1,37 @@
 {% extends 'base.html' %}
 {% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 mx-auto mt-5">
+            <form method="POST" class="mb-4">
+                {{ form.csrf_token }}
+                {{ form.hidden_tag() }}
+
+                <div class="mb-3">
+                    <label for="criterion" class="form-label">Выберите критерий поиска:</label>
+                    {{ form.criterion(class="form-select") }}
+                </div>
+
+                <div class="mb-3">
+                    <label for="keyword" class="form-label">Ключевое слово:</label>
+                    {{ form.keyword(class="form-control") }}
+                </div>
+
+                <button type="submit" class="btn btn-primary">Поиск</button>
+            </form>
+        </div>
+    </div>
+</div>
+
 <div class="container mt-5">
+    <h3 class="my-4">Результаты поиска</h3>
     <ul>
         {% if pagination.items %}
         <div class="row">
             {% for film in pagination.items %}
             <div class="col-md-6 mb-4">
                 <div class="card">
-                    <img src="{{ url_for('static', filename='poster/' + film.poster) }}" class="img-thumbnail"
+                    <img src="{{ url_for('static', filename='poster/' + film.poster) }}" class="card-img-top"
                          alt="{{ film.name }}">
                     <div class="card-body">
                         <h5 class="card-title">Название фильма: {{ film.name }}</h5>
@@ -28,7 +52,6 @@
         </div>
     </ul>
 {% include 'pagination.html' %}
-
     {% else %}
     <p>По вашему запросу ничего не найдено.</p>
     {% endif %}

@@ -2,6 +2,8 @@ from app.database import db
 from datetime import datetime
 from flask_login import UserMixin
 from app import manager
+from transliterate import translit
+from sqlalchemy.orm import column_property
 
 film_genre = db.Table(
     'film_genre',
@@ -19,7 +21,16 @@ class User(db.Model, UserMixin):
     roles = db.Column(db.String(128), nullable=True, default='user')
 
     def __repr__(self):
-        return '<User %r>' % self.id
+        return '<User %r>' % self.username
+
+
+class Genre(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(128), nullable=False, unique=True)
+    films = db.relationship('Film', secondary='film_genre', back_populates='genres')
+
+    def __repr__(self):
+        return self.name
 
 
 class Film(db.Model):
@@ -36,18 +47,28 @@ class Film(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
     def __repr__(self):
-        return '<Film %r>' % self.id
+        return '<Film %r>' % self.name
+
+    @staticmethod
+    def before_insert(mapper, connection, target):
+        if target.name:
+            target.translit_name = translit(target.name, 'ru', reversed=True)
+
+    @staticmethod
+    def before_update(mapper, connection, target):
+        if target.name:
+            target.translit_name = translit(target.name, 'ru', reversed=True)
 
 
-class Genre(db.Model):
+class Comment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(128), nullable=False, unique=True)
-    films = db.relationship('Film', secondary='film_genre', back_populates='genres')
+    film_id = db.Column(db.Integer, db.ForeignKey('film.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    text = db.Column(db.Text, nullable=False)
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
 
-    def __repr__(self):
-        return self.name
-
-
+    user = db.relationship('User', backref='comments')
+    film = db.relationship('Film', backref='comments')
 
 
 @manager.user_loader

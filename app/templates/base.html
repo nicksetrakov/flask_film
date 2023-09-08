@@ -11,12 +11,16 @@
        .text-body-secondary { --bs-secondary-color: rgb(109 154 199); }
 
 
+
+
+
+
     </style>
 </head>
 <body class="html">
 <header class="p-3 text-bg-dark">
     <div class="container">
-        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+        <div class="d-flex flex-wrap align-items-center justify-content-between justify-content-lg-start">
             <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
                 <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap">
                     <use xlink:href="#bootstrap"></use>
@@ -25,33 +29,37 @@
 
             <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
                 <li><a href="{{ url_for('index') }}" class="nav-link px-2 text-secondary"> Home </a></li>
-                <li><a href="{{ url_for('add_film') }}" class="nav-link px-2 text-white"> Add film </a></li>
+                <li><a href="{{ url_for('add_film') }}" class="nav-link px-2 text-white"> Добавить фильм </a></li>
+                <li><a href="{{ url_for('search_film') }}" class="nav-link px-2 text-white"> Расширенный поиск </a></li>
             </ul>
 
-            <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
-                <input type="search" class="form-control form-control-dark text-bg-dark" placeholder="Search..."
-                       aria-label="Search">
+            <form class="form-inline ml-lg-3 my-1" role="search" method="GET" action="{{ url_for('search_film') }}">
+                <div class="input-group">
+                    <input type="search" class="form-control" placeholder="Search..." aria-label="Search" name="query">
+                    <button type="submit" class="btn btn-primary mx-1 me-4">Поиск</button>
+                </div>
             </form>
 
             <div class="text-end">
                 {% if current_user.is_authenticated and current_user.username == 'admin' %}
-                <a href="{{ url_for('admin.index') }}" class="btn btn-outline-light me-2">Административная панель</a>
+                <a href="{{ url_for('admin.index') }}" class="btn btn-outline-light me-4 ">Административная панель</a>
                 {% endif %}
                 {% if current_user.is_authenticated %}
                 <a href="{{ url_for('logout') }}" class="btn btn-outline-light me-2">Logout</a>
                 {% else %}
                 <a href="{{ url_for('login') }}" class="btn btn-outline-light me-2">Login</a>
-                <a href="{{ url_for('registration') }}" class="btn btn-warning">Sign-up</a>
+                <a href="{{ url_for('registration') }}" class="btn btn-warning my-1">Sign-up</a>
                 {% endif %}
             </div>
         </div>
     </div>
 </header>
 
-{% for message in get_flashed_messages() %}
-<div class="alert alert-success">
-    {{ message }}
-</div>
+
+{% for category, message in get_flashed_messages(with_categories=true) %}
+    <div class="alert alert-{{ category }}">
+      {{ message }}
+    </div>
 {% endfor %}
 {% block content %}
 

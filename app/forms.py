@@ -2,6 +2,8 @@ from wtforms import BooleanField, StringField, PasswordField, validators, Submit
     IntegerField, SelectField, FileField, SelectMultipleField, widgets
 from flask_wtf import FlaskForm
 from wtforms.validators import DataRequired, Email, Length, EqualTo, ValidationError, NumberRange
+from flask_admin.form import Select2Widget
+
 from app.models import User
 from app.utils import allowed_file
 
@@ -34,7 +36,7 @@ class MessageForm(FlaskForm):
 
 
 class FilmForm(FlaskForm):
-    title = StringField('Название фильма:', validators=[DataRequired()])
+    name = StringField('Название фильма:', validators=[DataRequired()])
     genres = SelectMultipleField('Жанр:', choices=[], coerce=int, option_widget=widgets.CheckboxInput(),
                                  widget=widgets.ListWidget(prefix_label=False), render_kw={'size': 5})
     release_year = IntegerField('Дата выхода:', validators=[DataRequired(), NumberRange(min=1800, max=2100)])
@@ -55,6 +57,17 @@ class LoginForm(FlaskForm):
     submit = SubmitField('Авторизация')
 
 
+class CommentForm(FlaskForm):
+    text = TextAreaField('Комментарий', validators=[DataRequired()])
+    submit = SubmitField('Отправить')
+
+
 class SearchForm(FlaskForm):
-    search_query = StringField('Search')
-    sort_by = SelectField('Sort By', choices=[('rating', 'Rating'), ('release_year', 'Release Year')])
+    choices = [('title', 'Название фильма'),
+               ('genres', 'Жанры'),
+               ('release_date', 'Дата выпуска'),
+               ('rating', 'Рейтинг'),
+               ('director', 'Режиссёр')]
+
+    criterion = SelectField('Выберите критерий поиска', choices=choices)
+    keyword = StringField('Ключевое слово', validators=[DataRequired()])

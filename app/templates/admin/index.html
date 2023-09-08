@@ -1,5 +1,25 @@
 {% extends 'admin/master.html' %}
 
 {% block body %}
-  <p>Hello world</p>
+<p>Это административная панель, где вы можете редактировать всю информацию, также ниже представлена некоторая
+    статистика</p>
+<div class="content">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="box box-info">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Статистика сайта</h3>
+                </div>
+                <div class="box-body">
+                    <p>Количество пользователей: {{ user_count }}</p>
+                    <p>Количество фильмов: {{ film_count }}</p>
+                    <!-- Добавьте другие элементы статистики по вашим потребностям -->
+                </div>
+                <a href="{{ url_for('index') }}">
+                    <button class="btn btn-primary rounded-pill px-3">Выйти из админ панели</button>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

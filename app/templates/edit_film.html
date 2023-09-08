@@ -4,7 +4,7 @@
 <div class="container">
     <div class="row">
         <div class="col-md-4 offset-md-3">
-            <h2 class="mt-4" style="color: black;">Добавить новый фильм</h2>
+            <h2 class="mt-4" style="color: black;">Редактирование фильма</h2>
             <form method="POST" enctype="multipart/form-data">
                 {{ form.hidden_tag() }}
                 <div class="form-group">
@@ -19,7 +19,8 @@
                     <div>
                         {% for genre_id, genre_name in form.genres.choices %}
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox" name="genres" value="{{ genre_id }}">
+                            <input class="form-check-input" type="checkbox" name="genres" value="{{ genre_id }}"
+                                   {% if genre_id in form.genres.data %}checked{% endif %}>
                             <label class="form-check-label">{{ genre_name }}</label>
                         </div>
                         {% endfor %}
@@ -58,6 +59,11 @@
                     {% endfor %}
                 </div>
                 <div class="form-group">
+                    <label class="form-label">Старая обложка:</label>
+                    {% if film.poster %}
+                    <img src="{{ url_for('static', filename='poster/' + film.poster) }}" alt="Постер"
+                         class="img-fluid">
+                    {% endif %}
                     {{ form.poster.label(class="form-label") }}
                     {{ form.poster(class="form-control-file", id="posterInput", accept="image/*",
                     onchange="previewImage()") }}
@@ -99,7 +105,22 @@
                         }
                     });
                 }
+
+                // Здесь вы можете выполнить дополнительную логику
+                // для отслеживания изменений жанров в форме
+                // Например, можно обновить скрытое поле в форме
+                // с помощью JavaScript, чтобы отправить на сервер
+                // информацию о выбранных жанрах.
             });
+        });
+
+        // Устанавливаем начальные значения для списка выбранных жанров
+        const initialCheckedCheckboxes = document.querySelectorAll('input[type="checkbox"]:checked');
+        initialCheckedCheckboxes.forEach(function (checkbox) {
+            const selectedGenreName = checkbox.parentElement.textContent.trim();
+            const listItem = document.createElement('li');
+            listItem.textContent = selectedGenreName;
+            selectedGenresList.appendChild(listItem);
         });
     });
 
