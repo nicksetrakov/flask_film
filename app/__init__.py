@@ -12,7 +12,7 @@ db.init_app(app)
 manager = LoginManager(app)
 
 
-from app import models, routes, admin
+from app import models, routes, admin   # noqa: F401, E402
 
 
 with app.app_context():

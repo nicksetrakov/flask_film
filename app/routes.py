@@ -4,7 +4,7 @@ from werkzeug.utils import secure_filename
 from flask_login import login_user, login_required, logout_user, current_user
 from transliterate import translit
 from sqlalchemy import desc, or_
-from flask_paginate import Pagination, get_page_parameter
+
 
 import os
 from datetime import datetime
@@ -21,7 +21,7 @@ from app.utils import allowed_file
 def index():
     per_page = 10
     page = request.args.get('page', type=int, default=1)
-    pagination = Film.query.order_by(desc(Film.date)).paginate(page=page, per_page=per_page, error_out=False)
+    pagination = Film.query.order_by(desc(Film.release_year)).paginate(page=page, per_page=per_page, error_out=False)
 
     return render_template('index.html', pagination=pagination)
 
@@ -51,7 +51,7 @@ def registration():
 @login_required
 def add_film():
     form = FilmForm()
-    available_genres = Genre.query.all()  # Получить все доступные жанры из базы данных
+    available_genres = Genre.query.order_by(Genre.name).all()  # Получить все доступные жанры из базы данных
     form.genres.choices = [(genre.id, genre.name) for genre in available_genres]
     if request.method == 'POST' and form.validate_on_submit():
         new_film = Film(
@@ -137,7 +137,7 @@ def edit_film(film_translit_name):
 
         try:
             db.session.commit()
-            return redirect(url_for('film_page', film_name=film.translit_name))
+            return redirect(url_for('film_page', film_translit_name=film.translit_name))
         except Exception as e:
             flash(f'Произошла ошибка: {str(e)}', 'danger')
 
@@ -185,6 +185,7 @@ def add_comment(film_translit_name):
 @login_required
 def delete_film(film_translit_name):
     film = Film.query.filter_by(translit_name=film_translit_name).first()
+    comments = Comment.query.filter_by(film_id=film.id).all()
 
     if not film:
         flash('Фильм не найден.', category='danger')
@@ -202,6 +203,8 @@ def delete_film(film_translit_name):
                 os.remove(poster_path)
 
         # Удалите фильм из базы данных
+        for comment in comments:
+            db.session.delete(comment)
         db.session.delete(film)
         db.session.commit()
         flash('Фильм успешно удален.', category='success')

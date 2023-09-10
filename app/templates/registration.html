@@ -1,13 +1,15 @@
 {% extends 'base.html' %}
 {% block content %}
-<div id="content">
-    <div class="line-hor"></div>
-    <div class="content">
-        <h3>Registration <span>Form</span></h3>
-        <form  method="post">
-            {{ form.csrf_token() }}
-                <div class="mb-3"> {{ form.username.label() }}
-                    {{ form.username() }}
+<div class="container mt-5">
+    <h3 class="mb-4">Registration <span>Form</span></h3>
+    <div class="row">
+        <div class="col-md-6">
+            <form method="post">
+                {{ form.csrf_token() }}
+
+                <div class="mb-3">
+                    {{ form.username.label() }}
+                    {{ form.username(class="form-control") }}
                     {% if form.errors.username %}
                     <ul class="errors">
                         {% for error in form.errors.username %}
@@ -16,9 +18,10 @@
                     </ul>
                     {% endif %}
                 </div>
-                <br>
-                <div class="mb-3"> {{ form.email.label() }}
-                    {{ form.email() }}
+
+                <div class="mb-3">
+                    {{ form.email.label() }}
+                    {{ form.email(class="form-control") }}
                     {% if form.errors.email %}
                     <ul class="errors">
                         {% for error in form.errors.email %}
@@ -27,18 +30,25 @@
                     </ul>
                     {% endif %}
                 </div>
-                <br>
 
-                <div class="mb-3"> {{ form.password.label() }}
-                    {{ form.password() }}
+                <div class="mb-3">
+                    {{ form.password.label() }}
+                    {{ form.password(class="form-control") }}
                 </div>
-                <div class="mb-3"> {{ form.confirm.label() }}
-                    {{ form.confirm() }}
+
+                <div class="mb-3">
+                    {{ form.confirm.label() }}
+                    {{ form.confirm(class="form-control") }}
                 </div>
-                <div class="mb-3"> {{ form.accept_tos.label() }} {{ form.accept_tos() }}
+
+                <div class="mb-3 form-check">
+                    {{ form.accept_tos(class="form-check-input") }}
+                    <label class="form-check-label" for="accept_tos">I accept the Terms of Service</label>
                 </div>
-                <button type="submit" class="btn btn-primary">Registration</button>
-        </form>
+
+                <button type="submit" class="btn btn-primary">Регистрация</button>
+            </form>
+        </div>
     </div>
 </div>
 {% endblock %}
