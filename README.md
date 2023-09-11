@@ -1,6 +1,10 @@
 Start:
 python app.py
 
+admin username: admin
+
+admin password: 21305
+
 There are screenshots:
 Home page with login and not
 

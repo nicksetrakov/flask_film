@@ -1,13 +1,12 @@
+# Import necessary modules and classes
 from flask import redirect, url_for, request, flash
 from flask_admin import AdminIndexView, expose
 from flask_admin.contrib.sqla import ModelView
 from flask_login import current_user
 from werkzeug.utils import secure_filename
 from transliterate import translit
-
 import os
 from datetime import datetime
-
 from app import app
 from app.models import User, Film, Genre
 from app.forms import FilmForm
@@ -15,6 +14,7 @@ from app.database import db
 from app.utils import allowed_file
 
 
+# Create a custom dashboard view for the Flask-Admin interface
 class DashBoardView(AdminIndexView):
     @expose('/')
     def add_data_db(self):
@@ -23,20 +23,21 @@ class DashBoardView(AdminIndexView):
         return self.render('admin/index.html', user_count=user_count, film_count=film_count)
 
     def is_accessible(self):
-        # Проверьте, является ли текущий пользователь аутентифицированным и имеет роль 'admin'
+        # Check if the current user is authenticated and has the 'admin' role
         return current_user.is_authenticated and 'admin' in current_user.roles
 
     def inaccessible_callback(self, name, **kwargs):
-        # Если текущий пользователь не имеет доступ к админ-панели, перенаправьте его на страницу входа
+        # Redirect the user to the login page if they don't have access to the admin panel
         return redirect(url_for('index'))
 
 
+# Create a custom view for the Film model in Flask-Admin
 class FilmModelView(ModelView):
 
     @expose('/new/', methods=('GET', 'POST'))
     def create_view(self):
         form = FilmForm()
-        available_genres = Genre.query.all()  # Получить все доступные жанры из базы данных
+        available_genres = Genre.query.all()  # Get all available genres from the database
         form.genres.choices = [(genre.id, genre.name) for genre in available_genres]
         if request.method == 'POST' and form.validate_on_submit():
             new_film = Film(
@@ -52,26 +53,25 @@ class FilmModelView(ModelView):
             if poster and allowed_file(poster.filename):
                 filename = secure_filename(poster.filename)
                 if '.' not in filename:
-                    filename = f'deffault.{filename}'
-                extension = filename.rsplit('.', 1)[1].lower()
+                    filename = f'default.{filename}'
                 unique_filename = f"{datetime.now().strftime('%Y%m%d%H%M%S')}_{filename}"
                 poster_path = os.path.join(app.config['UPLOAD_FOLDER'], unique_filename)
                 poster.save(poster_path)
                 new_film.poster = unique_filename
                 selected_genres = Genre.query.filter(Genre.id.in_(form.genres.data)).all()
-                print(selected_genres)
-                print(form.genres.data)
                 new_film.genres.extend(selected_genres)
             try:
                 db.session.add(new_film)
                 db.session.commit()
                 return redirect(url_for('film_page', film_name=new_film.translit_name))
             except Exception as e:
-                flash(f'Произошла ошибка: {str(e)}')
+                flash(f'An error occurred: {str(e)}')
         return self.render('admin/create_film.html', form=form, available_genres=available_genres)
 
+    # Define the columns to be displayed in the list view of the Film model
     column_list = ('name', 'genres', 'release_year', 'date', 'director', 'description_partial', 'rating')
 
+    # Define labels for the columns in the list view
     column_labels = {
         'name': 'Название',
         'genres': 'Жанры',
@@ -82,19 +82,22 @@ class FilmModelView(ModelView):
         'rating': 'Рейтинг',
     }
 
+    # Define columns that can be searched in the list view
     column_searchable_list = ('name', 'director')
 
+    # Define columns that can be filtered in the list view
     column_filters = ('name', 'date', 'rating')
 
+    # Define sortable columns and default sorting order
     column_sortable_list = ('name', 'release_year', 'director', 'rating', 'genres', 'date')
-    column_default_sort = ('date', True)  # Сортировка по умолчанию по столбцу в порядке убывания
+    column_default_sort = ('date', True)
 
-
-    def _description_partial(view, context, model, name):
-        # Эта функция будет вызываться для форматирования поля description
-        # В данном случае, она выводит только первые 50 символов
+    def _description_partial(self, context, model, name):
+        # This function is called to format the 'description' field in the list view
+        # In this case, it displays only the first 50 characters
         return model.description[:50] if model.description else ''
 
+    # Use the custom formatter for the 'description_partial' column
     column_formatters = {
         'description_partial': _description_partial
     }
